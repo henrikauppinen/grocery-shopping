@@ -3,8 +3,7 @@ import { Link } from 'react-router-dom'
 import AppBar from 'material-ui/AppBar'
 import Toolbar from 'material-ui/Toolbar'
 import Button from 'material-ui/Button'
-import {
-  List,
+import List, {
   ListItem,
   ListItemText,
   ListSubheader
