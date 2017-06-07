@@ -24,7 +24,20 @@ const toggleRow = (state, action) => {
   return newState
 }
 
+const updateNewItemText = (action, state) => {
+  const newState = {}
+  Object.assign(newState, state, {newItemTextField: action.text})
+  return newState
+}
+
+const updateNewItemGroupText = (action, state) => {
+  const newState = {}
+  Object.assign(newState, state, {newItemGroupTextField: action.text})
+  return newState
+}
+
 const addRow = (state, action) => {
+  console.log(action)
   const newState = {}
   let newRow = {
     key: 6, // generate
@@ -32,8 +45,10 @@ const addRow = (state, action) => {
     title: action.row.title,
     checked: false
   }
-  let rows = this.state.rows
+  let rows = state.rows
   rows.push(newRow)
+  console.log(state)
+  console.log(newState)
   Object.assign(newState, state, {rows: rows})
   return newState
 }
@@ -42,6 +57,10 @@ const rootReducer = (state = DEFAULT_STATE, action) => {
   switch (action.type) {
     case 'TOGGLE_ROW':
       return toggleRow(state, action)
+    case 'UPDATE_NEW_ITEM_TEXT':
+      return updateNewItemText(state, action)
+    case 'UPDATE_NEW_ITEM_GROUP_TEXT':
+      return updateNewItemGroupText(state, action)
     case 'ADD_ROW':
       return addRow(state, action)
     default:

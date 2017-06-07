@@ -1,4 +1,7 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { addRow } from './state/actions'
 import { Link } from 'react-router-dom'
 import AppBar from 'material-ui/AppBar'
 import Toolbar from 'material-ui/Toolbar'
@@ -15,12 +18,12 @@ class ShoppingListEditor extends React.Component {
     this.handleNewItemFormSubmit = this.handleNewItemFormSubmit.bind(this)
   }
   handleNewItemFormSubmit(e) {
-    // console.log(e)
     e.preventDefault()
     this.props.addRow({
       title: this.state.newItemTextField,
       group: this.state.newItemGroupTextField
     })
+
     this.setState({
       newItemTextField: '',
       newItemGroupTextField: ''
@@ -41,12 +44,12 @@ class ShoppingListEditor extends React.Component {
             <TextField
               label='New item'
               value={this.state.newItemTextField}
-              onChange={(event) => this.setState({newItemTextField: event.target.value })}
+              onChange={(event) => this.setState({newItemTextField: event.target.value})}
             />
             <TextField
               label='Group'
               value={this.state.newItemGroupTextField}
-              onChange={(event) => this.setState({newItemGroupTextField: event.target.value })}
+              onChange={(event) => this.setState({newItemGroupTextField: event.target.value})}
             />
             <Button raised type='submit'>Add</Button>
           </form>
@@ -56,4 +59,23 @@ class ShoppingListEditor extends React.Component {
   }
 }
 
-export default ShoppingListEditor
+ShoppingListEditor.propTypes = {
+  addRow: PropTypes.func
+}
+
+const mapStateToProps = (state) => {
+  return {
+    newItemTextField: state.newItemTextField,
+    newItemGroupTextField: state.newItemGroupTextField
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addRow: row => dispatch(addRow(row))
+  }
+}
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ShoppingListEditor)

@@ -14,7 +14,7 @@ class App extends React.Component {
         <Router>
           <div>
             <Route exact path='/' render={() => <ShoppingList />} />
-            <Route path='/edit' render={() => <ShoppingListEditor addRow={() => console.log('wire this up to state')} />} />
+            <Route path='/edit' render={() => <ShoppingListEditor />} />
           </div>
         </Router>
       </MuiThemeProvider>
