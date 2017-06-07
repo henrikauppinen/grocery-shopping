@@ -1,4 +1,7 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { toggleRow } from './stateActions'
 import { Link } from 'react-router-dom'
 import AppBar from 'material-ui/AppBar'
 import Toolbar from 'material-ui/Toolbar'
@@ -12,24 +15,6 @@ import Checkbox from 'material-ui/checkbox'
 import Divider from 'material-ui/divider'
 
 class ShoppingList extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-    }
-    this.handleClick = this.handleClick.bind(this)
-  }
-  handleClick (e, key) {
-    let { rows } = this.state
-    let newRows = rows.map(row => {
-      if (row.key === key) {
-        row.checked = !row.checked
-      }
-      return row
-    })
-    this.setState({
-      rows: newRows
-    })
-  }
   listSubGroup (rows, group) {
     let done = rows.filter(row => row.checked).length
     let total = rows.length
@@ -45,7 +30,7 @@ class ShoppingList extends React.Component {
               <ListItem
                 key={row.key}
                 button
-                onClick={event => this.props.handleRowChange(row.key)}
+                onClick={event => this.props.onToggleRow(row.key)}
               >
                 <Checkbox
                   checked={row.checked}
@@ -83,4 +68,24 @@ class ShoppingList extends React.Component {
   }
 }
 
-export default ShoppingList
+ShoppingList.propTypes = {
+  onToggleRow: PropTypes.func,
+  rows: PropTypes.array
+}
+
+const mapStateToProps = (state) => {
+  return {
+    rows: state.rows
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onToggleRow: id => dispatch(toggleRow(id))
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ShoppingList)
