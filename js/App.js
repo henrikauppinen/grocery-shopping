@@ -3,14 +3,26 @@ import {
   BrowserRouter as Router,
   Route
 } from 'react-router-dom'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
+import createPalette from 'material-ui/styles/palette'
+import {
+  grey as primary,
+  amber as accent
+} from 'material-ui/styles/colors'
 import ShoppingList from './ShoppingList'
 import ShoppingListEditor from './ShoppingListEditor'
+
+const theme = createMuiTheme({
+  palette: createPalette({
+    primary,
+    accent
+  })
+})
 
 class App extends React.Component {
   render () {
     return (
-      <MuiThemeProvider>
+      <MuiThemeProvider theme={theme}>
         <Router>
           <div>
             <Route exact path='/' render={() => <ShoppingList />} />

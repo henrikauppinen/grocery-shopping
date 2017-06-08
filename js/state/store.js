@@ -3,11 +3,11 @@ import uniqueId from 'lodash.uniqueid'
 
 const DEFAULT_STATE = {
   rows: [
-    {key: 1, group: 'meat', title: 'Kebab', checked: false},
-    {key: 2, group: 'meat', title: 'Sausage', checked: false},
-    {key: 3, group: 'meat', title: 'Ham', checked: true},
-    {key: 4, group: 'green', title: 'Salad', checked: false},
-    {key: 5, group: 'green', title: 'Tomato', checked: true}
+    {key: uniqueId(), group: 'meat', title: 'Kebab', checked: false},
+    {key: uniqueId(), group: 'meat', title: 'Sausage', checked: false},
+    {key: uniqueId(), group: 'meat', title: 'Ham', checked: true},
+    {key: uniqueId(), group: 'green', title: 'Salad', checked: false},
+    {key: uniqueId(), group: 'green', title: 'Tomato', checked: true}
   ],
   catalog: [
     {title: 'Tomato', group: 'green'},
@@ -26,7 +26,8 @@ const DEFAULT_STATE = {
   ],
   groupCatalog: [
     'green',
-    'meat'
+    'meat',
+    'dairy'
   ]
 }
 
