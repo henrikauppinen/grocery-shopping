@@ -73,16 +73,18 @@ class ShoppingListEditor extends React.Component {
         </div>
         <div>
           <List>
-            {this.props.catalog.map(row => {
-              return (
-                <div key={row.title}>
-                  <Divider light />
-                  <ListItem button onClick={() => this.handleAddRow(row.title, row.group)}>
-                    <ListItemText primary={row.title} secondary={row.group} />
-                  </ListItem>
-                </div>
-              )
-            })}
+            {this.props.catalog
+              .filter(row => row.title.toLowerCase().indexOf(this.state.title.toLowerCase()) !== -1)
+              .map(row => {
+                return (
+                  <div key={row.title}>
+                    <Divider light />
+                    <ListItem button onClick={() => this.handleAddRow(row.title, row.group)}>
+                      <ListItemText primary={row.title} secondary={row.group} />
+                    </ListItem>
+                  </div>
+                )
+              })}
             <Divider light />
           </List>
         </div>

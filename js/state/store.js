@@ -11,10 +11,18 @@ const DEFAULT_STATE = {
   ],
   catalog: [
     {title: 'Tomato', group: 'green'},
+    {title: 'Tomato 2', group: 'green'},
+    {title: 'Cucumber', group: 'green'},
     {title: 'Salad', group: 'green'},
+    {title: 'Onion', group: 'green'},
     {title: 'Kebab', group: 'meat'},
     {title: 'Sausage', group: 'meat'},
-    {title: 'Ham', group: 'meat'}
+    {title: 'Ham', group: 'meat'},
+    {title: 'Lamb', group: 'meat'},
+    {title: 'Steak', group: 'meat'},
+    {title: 'Butter', group: 'dairy'},
+    {title: 'Milk', group: 'dairy'},
+    {title: 'Cheese', group: 'dairy'}
   ],
   groupCatalog: [
     'green',

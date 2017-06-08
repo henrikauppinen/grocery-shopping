@@ -26,10 +26,9 @@ class ShoppingList extends React.Component {
         <List>
           {rows.map(row => {
             return (
-              <div>
+              <div key={row.key}>
                 <Divider light />
                 <ListItem
-                  key={row.key}
                   button
                   onClick={event => this.props.onToggleRow(row.key)}
                 >
