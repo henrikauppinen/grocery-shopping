@@ -7,6 +7,11 @@ import AppBar from 'material-ui/AppBar'
 import Toolbar from 'material-ui/Toolbar'
 import Button from 'material-ui/Button'
 import TextField from 'material-ui/TextField'
+import List, {
+  ListItem,
+  ListItemText
+} from 'material-ui/list'
+import Divider from 'material-ui/divider'
 
 class ShoppingListEditor extends React.Component {
   constructor (props) {
@@ -18,22 +23,25 @@ class ShoppingListEditor extends React.Component {
       groupError: false
     }
     this.handleNewItemFormSubmit = this.handleNewItemFormSubmit.bind(this)
+    this.handleAddRow = this.handleAddRow.bind(this)
   }
-  handleNewItemFormSubmit(e) {
+  handleNewItemFormSubmit (e) {
     e.preventDefault()
     if (this.state.title === '') {
-      this.setState({
-        titleError: true
-      })
+      this.setState({titleError: true})
+      return
     }
-    this.props.addRow({
-      title: this.state.title,
-      group: this.state.group
-    })
-
+    this.setState({titleError: false})
+    this.handleAddRow(this.state.title, this.state.group)
     this.setState({
       title: '',
       group: ''
+    })
+  }
+  handleAddRow(title, group) {
+    this.props.addRow({
+      title: title,
+      group: group
     })
   }
   render () {
@@ -63,13 +71,35 @@ class ShoppingListEditor extends React.Component {
             <Button raised type='submit'>Add</Button>
           </form>
         </div>
+        <div>
+          <List>
+            {this.props.catalog.map(row => {
+              return (
+                <div key={row.title}>
+                  <Divider light />
+                  <ListItem button onClick={() => this.handleAddRow(row.title, row.group)}>
+                    <ListItemText primary={row.title} secondary={row.group} />
+                  </ListItem>
+                </div>
+              )
+            })}
+            <Divider light />
+          </List>
+        </div>
       </div>
     )
   }
 }
 
 ShoppingListEditor.propTypes = {
+  catalog: PropTypes.array,
   addRow: PropTypes.func
+}
+
+const mapStateToProps = (state) => {
+  return {
+    catalog: state.catalog
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -78,6 +108,6 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 export default connect(
-  false,
+  mapStateToProps,
   mapDispatchToProps
 )(ShoppingListEditor)

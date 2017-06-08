@@ -15,6 +15,10 @@ const DEFAULT_STATE = {
     {title: 'Kebab', group: 'meat'},
     {title: 'Sausage', group: 'meat'},
     {title: 'Ham', group: 'meat'}
+  ],
+  groupCatalog: [
+    'green',
+    'meat'
   ]
 }
 

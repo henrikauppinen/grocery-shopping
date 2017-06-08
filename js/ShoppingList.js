@@ -20,25 +20,28 @@ class ShoppingList extends React.Component {
     let total = rows.length
     return (
       <div key={group}>
-        <Divider />
         <ListSubheader>
           {group} ({done} / {total})
         </ListSubheader>
         <List>
           {rows.map(row => {
             return (
-              <ListItem
-                key={row.key}
-                button
-                onClick={event => this.props.onToggleRow(row.key)}
-              >
-                <Checkbox
-                  checked={row.checked}
-                />
-                <ListItemText primary={row.title} />
-              </ListItem>
+              <div>
+                <Divider light />
+                <ListItem
+                  key={row.key}
+                  button
+                  onClick={event => this.props.onToggleRow(row.key)}
+                >
+                  <Checkbox
+                    checked={row.checked}
+                  />
+                  <ListItemText primary={row.title} />
+                </ListItem>
+              </div>
             )
           })}
+          <Divider light />
         </List>
       </div>
     )
