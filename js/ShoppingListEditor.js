@@ -12,21 +12,28 @@ class ShoppingListEditor extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      newItemTextField: '',
-      newItemGroupTextField: ''
+      title: '',
+      titleError: false,
+      group: '',
+      groupError: false
     }
     this.handleNewItemFormSubmit = this.handleNewItemFormSubmit.bind(this)
   }
   handleNewItemFormSubmit(e) {
     e.preventDefault()
+    if (this.state.title === '') {
+      this.setState({
+        titleError: true
+      })
+    }
     this.props.addRow({
-      title: this.state.newItemTextField,
-      group: this.state.newItemGroupTextField
+      title: this.state.title,
+      group: this.state.group
     })
 
     this.setState({
-      newItemTextField: '',
-      newItemGroupTextField: ''
+      title: '',
+      group: ''
     })
   }
   render () {
@@ -43,13 +50,15 @@ class ShoppingListEditor extends React.Component {
           <form onSubmit={this.handleNewItemFormSubmit}>
             <TextField
               label='New item'
-              value={this.state.newItemTextField}
-              onChange={(event) => this.setState({newItemTextField: event.target.value})}
+              value={this.state.title}
+              onChange={(event) => this.setState({title: event.target.value})}
+              error={this.state.titleError}
             />
             <TextField
               label='Group'
-              value={this.state.newItemGroupTextField}
-              onChange={(event) => this.setState({newItemGroupTextField: event.target.value})}
+              value={this.state.group}
+              onChange={(event) => this.setState({group: event.target.value})}
+              error={this.state.groupError}
             />
             <Button raised type='submit'>Add</Button>
           </form>
@@ -63,19 +72,12 @@ ShoppingListEditor.propTypes = {
   addRow: PropTypes.func
 }
 
-const mapStateToProps = (state) => {
-  return {
-    newItemTextField: state.newItemTextField,
-    newItemGroupTextField: state.newItemGroupTextField
-  }
-}
-
 const mapDispatchToProps = (dispatch) => {
   return {
     addRow: row => dispatch(addRow(row))
   }
 }
 export default connect(
-  mapStateToProps,
+  false,
   mapDispatchToProps
 )(ShoppingListEditor)

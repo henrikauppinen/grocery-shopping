@@ -1,4 +1,5 @@
 import { createStore } from 'redux'
+import uniqueId from 'lodash.uniqueid'
 
 const DEFAULT_STATE = {
   rows: [
@@ -8,8 +9,13 @@ const DEFAULT_STATE = {
     {key: 4, group: 'green', title: 'Salad', checked: false},
     {key: 5, group: 'green', title: 'Tomato', checked: true}
   ],
-  newItemTextField: '',
-  newItemGroupTextField: ''
+  catalog: [
+    {title: 'Tomato', group: 'green'},
+    {title: 'Salad', group: 'green'},
+    {title: 'Kebab', group: 'meat'},
+    {title: 'Sausage', group: 'meat'},
+    {title: 'Ham', group: 'meat'}
+  ]
 }
 
 const toggleRow = (state, action) => {
@@ -24,31 +30,16 @@ const toggleRow = (state, action) => {
   return newState
 }
 
-const updateNewItemText = (action, state) => {
-  const newState = {}
-  Object.assign(newState, state, {newItemTextField: action.text})
-  return newState
-}
-
-const updateNewItemGroupText = (action, state) => {
-  const newState = {}
-  Object.assign(newState, state, {newItemGroupTextField: action.text})
-  return newState
-}
-
 const addRow = (state, action) => {
-  console.log(action)
   const newState = {}
   let newRow = {
-    key: 6, // generate
-    group: action.row.group,
+    key: uniqueId(),
     title: action.row.title,
+    group: action.row.group,
     checked: false
   }
   let rows = state.rows
   rows.push(newRow)
-  console.log(state)
-  console.log(newState)
   Object.assign(newState, state, {rows: rows})
   return newState
 }
@@ -57,10 +48,6 @@ const rootReducer = (state = DEFAULT_STATE, action) => {
   switch (action.type) {
     case 'TOGGLE_ROW':
       return toggleRow(state, action)
-    case 'UPDATE_NEW_ITEM_TEXT':
-      return updateNewItemText(state, action)
-    case 'UPDATE_NEW_ITEM_GROUP_TEXT':
-      return updateNewItemGroupText(state, action)
     case 'ADD_ROW':
       return addRow(state, action)
     default:
