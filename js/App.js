@@ -9,6 +9,7 @@ import {
   grey as primary,
   amber as accent
 } from 'material-ui/styles/colors'
+
 import ShoppingList from './ShoppingList'
 import ShoppingListEditor from './ShoppingListEditor'
 

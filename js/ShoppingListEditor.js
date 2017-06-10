@@ -79,7 +79,7 @@ class ShoppingListEditor extends React.Component {
                 return (
                   <div key={row.title}>
                     <Divider light />
-                    <ListItem button onClick={() => this.handleAddRow(row.title, row.group)}>
+                    <ListItem onClick={() => this.handleAddRow(row.title, row.group)}>
                       <ListItemText primary={row.title} secondary={row.group} />
                     </ListItem>
                   </div>

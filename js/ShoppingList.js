@@ -29,8 +29,7 @@ class ShoppingList extends React.Component {
               <div key={row.key}>
                 <Divider light />
                 <ListItem
-                  button
-                  onClick={event => this.props.onToggleRow(row.key)}
+                  onTouchTap={event => this.props.onToggleRow(row.key)}
                 >
                   <Checkbox
                     checked={row.checked}
