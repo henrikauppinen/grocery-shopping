@@ -1,4 +1,5 @@
 const path = require('path')
+const env = require('./env.js')
 
 module.exports = {
   context: __dirname,
@@ -10,7 +11,8 @@ module.exports = {
   },
   devServer: {
     publicPath: '/public/',
-    historyApiFallback: true
+    historyApiFallback: true,
+    host: env.host
   },
   resolve: {
     extensions: ['.js']

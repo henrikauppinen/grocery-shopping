@@ -10,3 +10,4 @@
 .idea/**/uiDesigner.xml
 
 node_modules
+env.js
