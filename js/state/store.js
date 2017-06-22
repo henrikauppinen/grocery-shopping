@@ -31,18 +31,6 @@ const DEFAULT_STATE = {
   ]
 }
 
-const toggleRow = (state, action) => {
-  const newState = {}
-  let newRows = state.rows.map(row => {
-    if (row.key === action.id) {
-      row.checked = !row.checked
-    }
-    return row
-  })
-  Object.assign(newState, state, {rows: newRows})
-  return newState
-}
-
 const addRow = (state, action) => {
   const newState = {}
   let newRow = {
@@ -57,12 +45,33 @@ const addRow = (state, action) => {
   return newState
 }
 
+const toggleRow = (state, action) => {
+  const newState = {}
+  let newRows = state.rows.map(row => {
+    if (row.key === action.id) {
+      row.checked = !row.checked
+    }
+    return row
+  })
+  Object.assign(newState, state, {rows: newRows})
+  return newState
+}
+
+const deleteRow = (state, action) => {
+  const newState = {}
+  let newRows = state.rows.filter(row => row.key !== action.id)
+  Object.assign(newState, state, {rows: newRows})
+  return newState
+}
+
 const rootReducer = (state = DEFAULT_STATE, action) => {
   switch (action.type) {
-    case 'TOGGLE_ROW':
-      return toggleRow(state, action)
     case 'ADD_ROW':
       return addRow(state, action)
+    case 'TOGGLE_ROW':
+      return toggleRow(state, action)
+    case 'DELETE_ROW':
+      return deleteRow(state, action)
     default:
       return state
   }

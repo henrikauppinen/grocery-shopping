@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { toggleRow } from './state/actions'
+import { toggleRow, deleteRow } from './state/actions'
 import { Link } from 'react-router-dom'
 import AppBar from 'material-ui/AppBar'
 import Toolbar from 'material-ui/Toolbar'
@@ -9,10 +9,13 @@ import Button from 'material-ui/Button'
 import List, {
   ListItem,
   ListItemText,
-  ListSubheader
+  ListSubheader,
+  ListItemSecondaryAction
 } from 'material-ui/list'
 import Checkbox from 'material-ui/checkbox'
 import Divider from 'material-ui/divider'
+import IconButton from 'material-ui/IconButton'
+import DeleteIcon from 'material-ui-icons/Delete'
 
 const ListSubGroup = ({title, done, total, children}) => {
   return (
@@ -37,13 +40,18 @@ ListSubGroup.propTypes = {
   ])
 }
 
-const SubGroupRow = ({id, checked, title, onToggleRow}) => {
+const SubGroupRow = ({id, checked, title, onToggleRow, onDeleteRow}) => {
   return (
     <div>
       <Divider light />
       <ListItem onTouchTap={event => onToggleRow(id)}>
         <Checkbox checked={checked} />
         <ListItemText primary={title} />
+        <ListItemSecondaryAction >
+          <IconButton aria-label='Delete' onTouchTap={event => onDeleteRow(id)}>
+            <DeleteIcon />
+          </IconButton>
+        </ListItemSecondaryAction>
       </ListItem>
     </div>
   )
@@ -52,7 +60,8 @@ SubGroupRow.propTypes = {
   id: PropTypes.string,
   checked: PropTypes.bool,
   title: PropTypes.string,
-  onToggleRow: PropTypes.func
+  onToggleRow: PropTypes.func,
+  onDeleteRow: PropTypes.func
 }
 
 class ShoppingList extends React.Component {
@@ -60,8 +69,7 @@ class ShoppingList extends React.Component {
     return rows.reduce((groups, row) => {
       if (groups[row.group] === undefined) {
         groups[row.group] = [row]
-      }
-      else {
+      } else {
         groups[row.group].push(row)
       }
       return groups
@@ -74,7 +82,7 @@ class ShoppingList extends React.Component {
         <AppBar>
           <Toolbar>
             <Link to='/edit'>
-              <Button raised accent>Edit</Button>
+              <Button raised>Edit</Button>
             </Link>
           </Toolbar>
         </AppBar>
@@ -92,6 +100,7 @@ class ShoppingList extends React.Component {
                 title={row.title}
                 id={row.key}
                 onToggleRow={this.props.onToggleRow}
+                onDeleteRow={this.props.onDeleteRow}
               />
             )}
           </ListSubGroup>)}
@@ -102,6 +111,7 @@ class ShoppingList extends React.Component {
 
 ShoppingList.propTypes = {
   onToggleRow: PropTypes.func,
+  onDeleteRow: PropTypes.func,
   rows: PropTypes.arrayOf(PropTypes.object)
 }
 
@@ -113,7 +123,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onToggleRow: id => dispatch(toggleRow(id))
+    onToggleRow: id => dispatch(toggleRow(id)),
+    onDeleteRow: id => dispatch(deleteRow(id))
   }
 }
 

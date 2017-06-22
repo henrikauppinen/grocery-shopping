@@ -50,7 +50,7 @@ class ShoppingListEditor extends React.Component {
         <AppBar>
           <Toolbar>
             <Link to='/'>
-              <Button raised accent>Close</Button>
+              <Button raised>Close</Button>
             </Link>
           </Toolbar>
         </AppBar>
