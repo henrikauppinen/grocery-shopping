@@ -14,38 +14,49 @@ import List, {
 import Checkbox from 'material-ui/checkbox'
 import Divider from 'material-ui/divider'
 
+const ListSubGroup = ({title, done, total, children}) => {
+  return (
+    <div>
+      <ListSubheader>
+        <strong>{title.toUpperCase()}</strong> ({done} / {total})
+      </ListSubheader>
+      <List>
+        {children}
+        <Divider light />
+      </List>
+    </div>
+  )
+}
+ListSubGroup.propTypes = {
+  title: PropTypes.string,
+  done: PropTypes.number,
+  total: PropTypes.number,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node
+  ])
+}
+
+const SubGroupRow = ({id, checked, title, onToggleRow}) => {
+  return (
+    <div>
+      <Divider light />
+      <ListItem onTouchTap={event => onToggleRow(id)}>
+        <Checkbox checked={checked} />
+        <ListItemText primary={title} />
+      </ListItem>
+    </div>
+  )
+}
+SubGroupRow.propTypes = {
+  id: PropTypes.string,
+  checked: PropTypes.bool,
+  title: PropTypes.string,
+  onToggleRow: PropTypes.func
+}
+
 class ShoppingList extends React.Component {
-  listSubGroup (rows, group) {
-    let done = rows.filter(row => row.checked).length
-    let total = rows.length
-    return (
-      <div key={group}>
-        <ListSubheader>
-          {group} ({done} / {total})
-        </ListSubheader>
-        <List>
-          {rows.map(row => {
-            return (
-              <div key={row.key}>
-                <Divider light />
-                <ListItem
-                  onTouchTap={event => this.props.onToggleRow(row.key)}
-                >
-                  <Checkbox
-                    checked={row.checked}
-                  />
-                  <ListItemText primary={row.title} />
-                </ListItem>
-              </div>
-            )
-          })}
-          <Divider light />
-        </List>
-      </div>
-    )
-  }
-  render () {
-    let { rows } = this.props
+  transformRowsToRowGroups(rows) {
     let groups = {}
     rows.map(row => {
       if (groups[row.group] === undefined) {
@@ -54,6 +65,10 @@ class ShoppingList extends React.Component {
         groups[row.group].push(row)
       }
     })
+    return groups
+  }
+  render () {
+    let groups = this.transformRowsToRowGroups(this.props.rows)
     return (
       <div className='shoppingListContainer'>
         <AppBar>
@@ -63,7 +78,22 @@ class ShoppingList extends React.Component {
             </Link>
           </Toolbar>
         </AppBar>
-        {Object.keys(groups).map(group => this.listSubGroup(groups[group], group))}
+        {Object.keys(groups).map(group =>
+          <ListSubGroup
+            key={group}
+            title={group}
+            done={groups[group].filter(row => row.checked).length}
+            total={groups[group].length}
+          >
+            {groups[group].map((row) =>
+              <SubGroupRow
+                key={row.key}
+                checked={row.checked}
+                title={row.title}
+                id={row.key}
+                onToggleRow={this.props.onToggleRow} />
+            )}
+          </ListSubGroup>)}
       </div>
     )
   }
@@ -71,7 +101,7 @@ class ShoppingList extends React.Component {
 
 ShoppingList.propTypes = {
   onToggleRow: PropTypes.func,
-  rows: PropTypes.array
+  rows: PropTypes.arrayOf(PropTypes.object)
 }
 
 const mapStateToProps = (state) => {
