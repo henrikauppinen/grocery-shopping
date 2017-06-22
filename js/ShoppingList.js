@@ -56,16 +56,16 @@ SubGroupRow.propTypes = {
 }
 
 class ShoppingList extends React.Component {
-  transformRowsToRowGroups(rows) {
-    let groups = {}
-    rows.map(row => {
+  transformRowsToRowGroups (rows) {
+    return rows.reduce((groups, row) => {
       if (groups[row.group] === undefined) {
         groups[row.group] = [row]
-      } else {
+      }
+      else {
         groups[row.group].push(row)
       }
-    })
-    return groups
+      return groups
+    }, [])
   }
   render () {
     let groups = this.transformRowsToRowGroups(this.props.rows)
@@ -91,7 +91,8 @@ class ShoppingList extends React.Component {
                 checked={row.checked}
                 title={row.title}
                 id={row.key}
-                onToggleRow={this.props.onToggleRow} />
+                onToggleRow={this.props.onToggleRow}
+              />
             )}
           </ListSubGroup>)}
       </div>
