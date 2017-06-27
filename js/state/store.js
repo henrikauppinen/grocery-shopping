@@ -1,4 +1,5 @@
-import { createStore } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk'
 import uniqueId from 'lodash.uniqueid'
 
 const DEFAULT_STATE = {
@@ -9,21 +10,7 @@ const DEFAULT_STATE = {
     {key: uniqueId(), group: 'green', title: 'Salad', checked: false},
     {key: uniqueId(), group: 'green', title: 'Tomato', checked: true}
   ],
-  catalog: [
-    {title: 'Tomato', group: 'green'},
-    {title: 'Tomato 2', group: 'green'},
-    {title: 'Cucumber', group: 'green'},
-    {title: 'Salad', group: 'green'},
-    {title: 'Onion', group: 'green'},
-    {title: 'Kebab', group: 'meat'},
-    {title: 'Sausage', group: 'meat'},
-    {title: 'Ham', group: 'meat'},
-    {title: 'Lamb', group: 'meat'},
-    {title: 'Steak', group: 'meat'},
-    {title: 'Butter', group: 'dairy'},
-    {title: 'Milk', group: 'dairy'},
-    {title: 'Cheese', group: 'dairy'}
-  ],
+  catalog: [],
   groupCatalog: [
     'green',
     'meat',
@@ -64,6 +51,14 @@ const deleteRow = (state, action) => {
   return newState
 }
 
+const addCatalogData = (state, action) => {
+  console.log(action.catalog)
+  const newState = {}
+  Object.assign(newState, state, {catalog: action.catalog})
+  console.log(newState)
+  return newState
+}
+
 const rootReducer = (state = DEFAULT_STATE, action) => {
   switch (action.type) {
     case 'ADD_ROW':
@@ -72,11 +67,16 @@ const rootReducer = (state = DEFAULT_STATE, action) => {
       return toggleRow(state, action)
     case 'DELETE_ROW':
       return deleteRow(state, action)
+    case 'ADD_CATALOG_DATA':
+      return addCatalogData(state, action)
     default:
       return state
   }
 }
 
-const store = createStore(rootReducer)
+const store = createStore(
+  rootReducer,
+  applyMiddleware(thunk)
+)
 
 export default store

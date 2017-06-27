@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { addRow } from './state/actions'
+import { addRow, getCatalogDataFromApi } from './state/actions'
 import { Link } from 'react-router-dom'
 import AppBar from 'material-ui/AppBar'
 import Toolbar from 'material-ui/Toolbar'
@@ -20,7 +20,8 @@ class ShoppingListEditor extends React.Component {
       title: '',
       titleError: false,
       group: '',
-      groupError: false
+      groupError: false,
+      catalog: []
     }
     this.handleNewItemFormSubmit = this.handleNewItemFormSubmit.bind(this)
     this.handleAddRow = this.handleAddRow.bind(this)
@@ -43,6 +44,9 @@ class ShoppingListEditor extends React.Component {
       title: title,
       group: group
     })
+  }
+  componentDidMount() {
+    this.props.getCatalogData()
   }
   render () {
     return (
@@ -95,6 +99,7 @@ class ShoppingListEditor extends React.Component {
 
 ShoppingListEditor.propTypes = {
   catalog: PropTypes.array,
+  getCatalogData: PropTypes.func,
   addRow: PropTypes.func
 }
 
@@ -106,6 +111,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    getCatalogData: () => dispatch(getCatalogDataFromApi()),
     addRow: row => dispatch(addRow(row))
   }
 }

@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="ShoppingList" pattern="!file:public/bundle.js&amp;&amp;!file:yarn.lock" />
+</component>
